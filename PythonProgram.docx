@@ -1,0 +1,201 @@
+1.  Grade Checker
+
+
+
+# Take input from the user
+
+score = int(input("Enter your score: "))
+
+
+
+# Check grade using if-else statements
+
+if score >= 90:
+
+   grade = "A"
+
+elif score >= 80:
+
+   grade = "B"
+
+elif score >= 70:
+
+   grade = "C"
+
+elif score >= 60:
+
+   grade = "D"
+
+else:
+
+   grade = "F"
+
+
+
+# Print the grade
+
+print("Your grade is:", grade)
+
+
+
+2. Student Grades Manager
+
+
+
+# Create an empty dictionary to store student grades
+
+student_grades = {}
+
+
+
+while True:
+
+  print("\nOptions:")
+
+   print("1. Add a new student and grade")
+
+   print("2. Update an existing student's grade")
+
+   print("3. Print all student grades")
+
+   print("4. Exit")
+
+
+
+   choice = input("Enter your choice (1-4): ")
+
+
+
+   if choice == "1":
+
+       name = input("Enter student name: ")
+
+       if name in student_grades:
+
+          print(f"{name} already exists with grade {student_grades[name]}. Use option 2 to update.")
+
+       else:
+
+           grade = input("Enter grade: ")
+
+          student_grades[name] = grade
+
+          print(f"{name} added with grade {grade}.")
+
+
+
+   elif choice == "2":
+
+       name = input("Enter student name to update: ")
+
+       if name in student_grades:
+
+           grade = input("Enter new grade: ")
+
+          student_grades[name] = grade
+
+          print(f"{name}'s grade updated to {grade}.")
+
+       else:
+
+          print(f"{name} not found. Use option 1 to add the student.")
+
+
+
+   elif choice == "3":
+
+       if not student_grades:
+
+          print("No students found.")
+
+       else:
+
+          print("\nStudent Grades:")
+
+           for name, grade in student_grades.items():
+
+              print(f"{name}: {grade}")
+
+
+
+   elif choice == "4":
+
+      print("Exiting program.")
+
+       break
+
+
+
+   else:
+
+      print("Invalid choice. Please enter a number from 1 to 4.")
+
+
+
+3. Write to a File
+
+
+
+# Open a file in write mode ('w')
+
+file = open("my_file.txt", "w")
+
+
+
+# Content to write
+
+content = "Hello, this is a sample file.\nThis file was created using Python."
+
+
+
+# Write content to the file
+
+file.write(content)
+
+
+
+# Close the file
+
+file.close()
+
+
+
+print("File 'my_file.txt' created and content written successfully.")
+
+
+
+4. Read from a File
+
+
+
+try:
+
+   # Open the file in read mode ('r')
+
+   file = open("my_file.txt", "r")
+
+
+
+   # Read the entire content
+
+   content = file.read()
+
+
+
+   # Print the content
+
+   print("File Content:\n")
+
+   print(content)
+
+
+
+   # Close the file
+
+   file.close()
+
+
+
+except FileNotFoundError:
+
+   print("The file 'my_file.txt' was not found.")
