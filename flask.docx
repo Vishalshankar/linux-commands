@@ -1,1 +1,117 @@
-Question 1: Create a Flask application with an /api route. When this route is accessed, it should return a JSON list. The data should be stored in a backend file, read from it, and sent as a response.
+Question 1: Create a Flask application with an /api route. When this route is accessed, it should return a JSON list. 
+The data should be stored in a backend file, read from it, and sent as a response.
+
+Folder Structure
+
+flask_api_app/
+├── app.py
+├── data.json
+
+data.json
+
+[
+    {"id": 1, "name": "Item One"},
+    {"id": 2, "name": "Item Two"},
+    {"id": 3, "name": "Item Three"}
+]
+
+app.py
+
+from flask import Flask, jsonify
+import json
+
+app = Flask(__name__)
+
+@app.route('/api')
+def get_data():
+    with open('data.json') as f:
+        data = json.load(f)
+    return jsonify(data)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+Output
+
+[
+    {"id": 1, "name": "Item One"},
+    {"id": 2, "name": "Item Two"},
+    {"id": 3, "name": "Item Three"}
+]
+
+Question 2: Create a form on the frontend that, when submitted, inserts data into MongoDB Atlas. Upon successful submission,
+the user should be redirected to another page displaying the message "Data submitted successfully". If there's an error 
+during submission, display the error on the same page without redirection.
+
+Folder Structure
+
+flask_mongo_form/
+├── app.py
+├── templates/
+│   ├── form.html
+│   └── success.html
+
+app.py
+
+from flask import Flask, render_template, request, redirect, url_for
+from pymongo import MongoClient
+
+app = Flask(__name__)
+
+# Connect to MongoDB Atlas
+client = MongoClient("YOUR_MONGODB_ATLAS_URI")
+db = client['flask_db']
+collection = db['form_data']
+
+@app.route('/', methods=['GET', 'POST'])
+def form():
+    error = None
+    if request.method == 'POST':
+        try:
+            name = request.form['name']
+            email = request.form['email']
+            collection.insert_one({'name': name, 'email': email})
+            return redirect(url_for('success'))
+        except Exception as e:
+            error = f"An error occurred: {str(e)}"
+    return render_template('form.html', error=error)
+
+@app.route('/success')
+def success():
+    return render_template('success.html')
+
+form.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Form</title>
+</head>
+<body>
+    <h2>Submit Your Info</h2>
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+    <form method="POST">
+        <label>Name:</label><br>
+        <input type="text" name="name" required><br><br>
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+
+success.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Success</title>
+</head>
+<body>
+    <h2>Data submitted successfully</h2>
+</body>
+</html>
+
